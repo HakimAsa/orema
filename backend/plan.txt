@@ -1,0 +1,9 @@
+- products services (CRUD) only /api/products is public, admin will access other routes (✅)
+- implement filtering features for products(in progress...🔰)
+- relationship between products ,reviews and stars(✅)
+- orders api
+- user registration(public), profile(private), login(public), logout(private), forgot password(private), getCurrentUser, (in progress...🔰)
+- admin status for products addition, deletion and update(✳️...)
+- api for fake paypal in order to buy products (❌)
+- pagination for products (❌...)
+- get top products api by their rating(public), for promotional purposes

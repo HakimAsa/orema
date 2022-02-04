@@ -1,0 +1,22 @@
+{
+  "jwtPrivateKey": "",
+  "jwtExpiresIn": "",
+  "jwtCookieExpire": "",
+  "db": "mongodb://127.0.0.1/oremashop",
+  "dev": "development",
+  "port": 2220,
+  "pageSize": 6,
+  "api_key": "",
+  "domain": "",
+  "smtp_host": "",
+  "smtp_port": "",
+  "smtp_email": "",
+  "smtp_password": "",
+  "from_email": "",
+  "from_name": "",
+  "to_email": "",
+  "AWSAccessKeyId": "",
+  "AWSSecretKey": "",
+  "S3_BUCKET": "",
+  "S3_BUCKET_REGION": ""
+}

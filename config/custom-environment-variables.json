@@ -1,0 +1,22 @@
+{
+  "jwtPrivateKey": "or_jwtPrivateKey",
+  "jwtExpiresIn": "or_jwtExpiresIn",
+  "jwtCookieExpire": "or_jwtCookieExpire",
+  "db": "oremashop_db",
+  "dev": "orema_env",
+  "pageSize": "or_pageSize",
+  "port": "orema_port",
+  "api_key": "or_api_key",
+  "domain": "or_sandbox_domain",
+  "smtp_host": "or_smtp_host",
+  "smtp_port": "or_smtp_port",
+  "smtp_email": "or_smtp_email",
+  "smtp_password": "or_smtp_password",
+  "from_email": "or_from_email",
+  "from_name": "or_from_name",
+  "to_email": "or_to_email",
+  "AWSAccessKeyId": "or_AWS_ACCESS_KEY_ID",
+  "AWSSecretKey": "or_AWS_SECRET_ACCESS_KEY",
+  "S3_BUCKET": "or_S3_BUCKET",
+  "S3_BUCKET_REGION": "or_S3_BUCKET_REGION"
+}
