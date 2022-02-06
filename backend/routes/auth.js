@@ -15,6 +15,8 @@ import CONS from '../../frontend/src/utils/Constants.js';
 import { placeForwardslash as pfs } from '../../frontend/src/utils/Globals.js';
 import { ENDPOINTS as eps } from '../../frontend/src/utils/EndPoints.js';
 import fld from '../../frontend/src/utils/FieldNames.js';
+import validateObjectId from '../middleware/validateObjectId.js';
+import admin from '../middleware/admin.js';
 
 // const path = from"path";
 // const fs = from"fs";
@@ -22,6 +24,7 @@ import fld from '../../frontend/src/utils/FieldNames.js';
 // const imageErr = from"../utils/errorOnImageUpload");
 // const bucket = config.get("S3_BUCKET");
 
+const setID = pfs(true, `${CONS.STR_CONS}${CONS.STR_ID}`);
 const router = express.Router();
 
 const complexityOptions = {
@@ -54,7 +57,7 @@ router.post('/register', async (req, res) => {
       );
 
   // avoiding duplicate email on registration
-  let newUser = await User.findOne({ email: email });
+  let newUser = await User.findOne({ email });
   if (newUser)
     return res
       .status(400)
@@ -132,16 +135,14 @@ router.get(pfs(true, eps.LOGOUT), auth, async (req, res) => {
 // @route GET /api/auth/me
 // @access Private
 router.get(pfs(true, eps.ME), auth, async (req, res) => {
-  const user = await User.findById(req.user._id);
-  if (!user)
-    return res
-      .status(400)
-      .send({ message: 'User not found' })
-      .populate({ path: eps.ORDERS });
+  const user = await User.findById(req.user._id).populate({
+    path: CONS.STR_ORDERS,
+  });
+  if (!user) return res.status(400).send({ message: 'User not found' });
   res.send({ success: true, data: user });
 });
 
-//@desc update user details
+// @desc update user details
 // @route PUT /api/auth/updatedetails
 // @access Private
 router.put(pfs(true, eps.UPDATEDETAILS), auth, async (req, res) => {
@@ -150,6 +151,8 @@ router.put(pfs(true, eps.UPDATEDETAILS), auth, async (req, res) => {
     return res.status(404).send(fourOfour(CONS.STR_USER, req.user._id));
 
   const { error } = validate(req.body, false);
+  const salt = await bcrypt.genSalt(10);
+
   const fieldToUpdate = {
     [fld.EMAIL]: req.body.email ? req.body.email : user.email,
     [fld.PHONENUMBER]: req.body.phoneNumber
@@ -158,7 +161,8 @@ router.put(pfs(true, eps.UPDATEDETAILS), auth, async (req, res) => {
     [fld.USERIMAGE]: req.body.userImage ? req.body.userImage : user.userImage,
     [fld.ADDRESS]: req.body.address ? req.body.address : user.address,
     [fld.NAME]: req.body.name ? req.body.name : user.name,
-    [fld.PASSWORD]: req.body.password && req.body.password,
+    [fld.PASSWORD]:
+      req.body.password && (await bcrypt.hash(req.body.password, salt)),
   };
 
   if (error) return res.status(400).send(error.details[0].message); //todo
@@ -180,6 +184,25 @@ router.put(pfs(true, eps.UPDATEDETAILS), auth, async (req, res) => {
       'userImage',
     ])
   );
+});
+
+// @desc delete user from db
+// @route DELETE /api/auth/delete
+// @access Private
+router.delete(setID, [validateObjectId, auth], async (req, res) => {
+  const id = req.params.id;
+  const user = await User.findById(id);
+  if (!user) return res.status(404).send(fourOfour(CONS.STR_USER, id));
+
+  if (req.user._id.toString() !== id.toString())
+    return res.status(404).send('You can only delete your own account');
+
+  user.remove();
+  res.send({
+    success: true,
+    successMessage: 'User has been deleted successfully',
+    data: user,
+  });
 });
 
 // @desc Forgot password

@@ -7,7 +7,9 @@ const Rating = ({ value, onReviewText }) => {
     <>
       <div className="rating">
         <Star value={value} />
-        <span>{onReviewText && onReviewText}</span>
+        <span style={{ paddingLeft: '20px' }}>
+          {onReviewText && onReviewText}
+        </span>
       </div>
     </>
   );

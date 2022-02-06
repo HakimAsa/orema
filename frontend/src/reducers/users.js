@@ -36,6 +36,21 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
       return { loading: false, user: action.payload };
     case TYPES.UDF:
       return { loading: false, error: action.payload };
+    case TYPES.UDRS:
+      return { user: {} };
+    default:
+      return state;
+  }
+};
+
+export const userUpdateProfileReducer = (state = {}, action) => {
+  switch (action.type) {
+    case TYPES.UUPR:
+      return { loading: true };
+    case TYPES.UUPS:
+      return { loading: false, success: true, userInfo: action.payload };
+    case TYPES.UUPF:
+      return { loading: false, errorTwo: action.payload };
     default:
       return state;
   }

@@ -1,10 +1,13 @@
 export const ENDPOINTS = {
   API: 'api',
   AUTH: 'auth',
+  CONFIG: 'config',
   LOGIN: 'login',
   LOGOUT: 'logout',
   ME: 'me',
+  ORDER: 'order',
   ORDERS: 'orders',
+  PAYPAL: 'paypal',
   PRODUCTS: 'products',
   REGISTER: 'register',
   UPDATEDETAILS: 'updatedetails',

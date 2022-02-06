@@ -42,7 +42,7 @@ const RegisterPage = () => {
       navigate(redirect);
     }
   }, [navigate, userInfo, redirect]);
-  const submitHanler = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setMessage('Passwords do not match!');
@@ -58,8 +58,8 @@ const RegisterPage = () => {
       {message && <Message variant="danger">{message}</Message>}
       {error && <Message variant="danger">{error}</Message>}
       {loading && <Loader />}
-      <Form onSubmit={submitHanler}>
-        <Form.Group controlId={trn.name}>
+      <Form onSubmit={submitHandler}>
+        <Form.Group controlId={trn.name} className="my-3">
           <Form.Label>{capitalize(trn.name)}</Form.Label>
           <Form.Control
             type={trn.text}
@@ -68,7 +68,7 @@ const RegisterPage = () => {
             onChange={(e) => setName(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Form.Group controlId={trn.email}>
+        <Form.Group controlId={trn.email} className="my-3">
           <Form.Label>{trn.emailAddress}</Form.Label>
           <Form.Control
             type={trn.email}
@@ -77,7 +77,7 @@ const RegisterPage = () => {
             onChange={(e) => setEmail(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Form.Group controlId={trn.phoneNumber}>
+        <Form.Group controlId={trn.phoneNumber} className="my-3">
           <Form.Label>{trn.phoneNumer}</Form.Label>
           <Form.Control
             type={trn.text}
@@ -86,8 +86,18 @@ const RegisterPage = () => {
             onChange={(e) => setPhoneNumber(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Form.Group controlId={trn.address}>
-          <Form.Label>{trn.address}</Form.Label>
+        <Form.Group controlId={trn.userImage} className="my-3">
+          <Form.Label>{trn.userImage}</Form.Label>
+          <Form.Control
+            type={trn.text}
+            placeholder={trn.enterImageUrl}
+            value={userImage}
+            disabled
+            onChange={(e) => setUserImage(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+        <Form.Group controlId={trn.livingAddress} className="my-3">
+          <Form.Label>{trn.livingAddress}</Form.Label>
           <Form.Control
             type={trn.text}
             placeholder={trn.enterAddress}
@@ -95,7 +105,7 @@ const RegisterPage = () => {
             onChange={(e) => setAddress(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Form.Group controlId={trn.password}>
+        <Form.Group controlId={trn.password} className="my-3">
           <Form.Label>{capitalize(trn.password)}</Form.Label>
           <Form.Control
             type={trn.password}
@@ -104,7 +114,7 @@ const RegisterPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Form.Group controlId={trn.confirmPassword}>
+        <Form.Group controlId={trn.confirmPassword} className="my-3">
           <Form.Label>{capitalize(trn.confirmPassword)}</Form.Label>
           <Form.Control
             type={trn.password}

@@ -8,13 +8,15 @@ import { placeForwardslash as pfs } from '../utils/Globals';
 const SearchBar = () => {
   const [keyword, setKeyword] = useState('');
 
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const submitHandler = (e) => {
     e.preventDefault();
-    keyword.trim()
-      ? history(pfs(true, CONS.STR_SEARCH, keyword))
-      : history(CONS.STR_FORWARDSLASH);
+    if (keyword.trim()) {
+      navigate(pfs(true, CONS.STR_SEARCH, keyword));
+    } else {
+      navigate(CONS.STR_FORWARDSLASH);
+    }
   };
 
   return (
@@ -24,7 +26,7 @@ const SearchBar = () => {
         name="q"
         onChange={(e) => setKeyword(e.target.value)}
         placeholder={trn.searchProducts}
-        className="ms-sm-5 me-sm-0"
+        className="me-sm-0"
       ></Form.Control>
       <Button type="submit" variant="outline-success" className="p-2">
         {trn.search}

@@ -6,7 +6,7 @@ const Star = ({ value, color, treshold }) => {
     return (
       <span key={index}>
         <i
-          style={{ color }}
+          style={{ color, height: '10px', width: '10px' }}
           className={
             value >= index + 1 //should not start with 0 base
               ? 'fas fa-star'
@@ -22,7 +22,7 @@ const Star = ({ value, color, treshold }) => {
 
 Star.defaultProps = {
   color: 'blue', //#f8e825
-  treshold: 5, //#f8e825
+  treshold: 5, //defaukt last
 };
 
 Star.propTypes = {

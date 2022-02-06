@@ -1,6 +1,10 @@
+import CONS from '../utils/Constants';
 import TYPES from '../utils/Types';
 
-export const cartReducers = (state = { cartItems: [] }, action) => {
+export const cartReducers = (
+  state = { cartItems: [], shippingAddress: {} },
+  action
+) => {
   switch (action.type) {
     case TYPES.CAI:
       const item = action.payload;
@@ -30,6 +34,16 @@ export const cartReducers = (state = { cartItems: [] }, action) => {
           (x) =>
             x.product !== action.payload && typeof x.product !== 'undefined'
         ),
+      };
+    case TYPES.CSSA:
+      return {
+        ...state,
+        [CONS.STR_SHIPPING_ADDRESS]: action.payload,
+      };
+    case TYPES.CSPM:
+      return {
+        ...state,
+        [CONS.STR_PAYMENTMETHOD]: action.payload,
       };
     default:
       return state;

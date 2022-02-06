@@ -5,6 +5,9 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import config from 'config';
+
+import CONS from '../../../frontend/src/utils/Constants.js';
+import { capitalize } from '../../../frontend/src/utils/Globals.js';
 const Schema = mongoose.Schema;
 
 const complexityOptions = {
@@ -69,7 +72,7 @@ const userSchema = new Schema(
 // Generate Token using jwt
 userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
-    { _id: this._id, isAdmin: this.isAdmin },
+    { _id: this._id, isAdmin: this.isAdmin, name: this.name },
     config.get('jwtPrivateKey'),
     {
       expiresIn: config.get('jwtExpiresIn'),
@@ -83,6 +86,20 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+// Cascade Delete orders when a user is deleted
+userSchema.pre('remove', async function (next) {
+  await this.model(capitalize(CONS.STR_ORDER)).deleteMany({ user: this._id });
+  next();
+});
+
+// Reverse Poplulate orders associated with users with virtuals
+userSchema.virtual(CONS.STR_ORDERS, {
+  ref: capitalize(CONS.STR_ORDER),
+  localField: '_id',
+  foreignField: 'user',
+  justOne: false,
+});
+
 const User = mongoose.model('User', userSchema);
 
 function validateUser(user, isRequired = true) {
@@ -93,6 +110,7 @@ function validateUser(user, isRequired = true) {
     isAdmin: Joi.boolean(),
     userImage: Joi.string(),
     address: Joi.string(),
+    id: Joi.string(),
     email: isRequired
       ? Joi.string().min(5).max(255).required().email()
       : Joi.string().min(5).max(255).email(),
@@ -101,7 +119,7 @@ function validateUser(user, isRequired = true) {
       .pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im),
     password: isRequired
       ? passwordComplexity(complexityOptions).required()
-      : passwordComplexity(complexityOptions),
+      : passwordComplexity(complexityOptions).allow(''),
     resetPasswordToken: Joi.string(),
     resetPasswordExpire: Joi.date(),
   });

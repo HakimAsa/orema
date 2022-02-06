@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Row, Col, Form, Button, Image } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { Row, Col, Form, Button, Image, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { LinkContainer } from 'react-router-bootstrap';
 
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { getUserDetails } from '../actions/users';
+import { getUserDetails, updateUserProfile } from '../actions/users';
+import { listMyOrders } from '../actions/orders';
 import trn from '../en';
 import CONS from '../utils/Constants';
 import {
@@ -29,11 +31,14 @@ const ProfilePage = () => {
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
 
+  const orderMyList = useSelector((state) => state.orderMyList);
+  const { loading: loadingMyList, error: errorMyList, orders } = orderMyList;
+
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const location = useLocation();
-  const search = location.search;
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  const { success, errorTwo } = userUpdateProfile;
 
   const navigate = useNavigate();
 
@@ -41,14 +46,15 @@ const ProfilePage = () => {
     if (validInput(userInfo)) {
       navigate(pfs(CONS.STR_FORWARDSLASH, CONS.STR_LOGIN));
     } else {
-      if (!validInput(user.name)) {
-        dispatch(getUserDetails(CONS.STR_UPDATEDETAILS));
+      if (validInput(user && user.name)) {
+        dispatch(getUserDetails(CONS.STR_ME));
+        dispatch(listMyOrders());
       } else {
-        setName(user.name || userInfo.name);
-        setEmail(user.email || userInfo.email);
-        setPhoneNumber(user.phoneNumber || userInfo.phoneNumber);
-        setAddress(user.address || userInfo.address);
-        setUserImage(user.userImage || userInfo.userImage);
+        setName(user.name);
+        setEmail(user.email);
+        setPhoneNumber(user.phoneNumber);
+        setAddress(user.address);
+        setUserImage(user.userImage);
       }
     }
   }, [navigate, userInfo, dispatch, user]);
@@ -58,7 +64,19 @@ const ProfilePage = () => {
     if (password !== confirmPassword) {
       setMessage('Passwords do not match!');
     } else {
-      // USER PROFILE DISPATCH
+      const fieldsToUpdate = {
+        id: user._id,
+        name: name,
+        email: email,
+        phoneNumber: phoneNumber,
+        userImage: userImage,
+        address: address,
+        password,
+      };
+
+      if (password === '') delete fieldsToUpdate.password;
+      dispatch(updateUserProfile(fieldsToUpdate));
+      setMessage('');
     }
   };
   return (
@@ -67,6 +85,8 @@ const ProfilePage = () => {
         <h2>{trn.userProfile}</h2>
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
+        {errorTwo && <Message variant="danger">{errorTwo}</Message>}
+        {success && <Message variant="success">{trn.profileUpdated}</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHanler}>
           <Form.Group controlId={trn.myPicture}>
@@ -141,6 +161,54 @@ const ProfilePage = () => {
       </Col>
       <Col md={9}>
         <h2>{trn.myOrders}</h2>
+        {loadingMyList ? (
+          <Loader />
+        ) : errorMyList ? (
+          <Message variant="danger">{errorMyList}</Message>
+        ) : (
+          <Table striped bordered hover responsive className="table-sm">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>DATE</th>
+                <th>TOTAL</th>
+                <th>PAID</th>
+                <th>DELIVERED</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td>{order._id}</td>
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>{order.totalPrice}</td>
+                  <td>
+                    {order.isPaid ? (
+                      order.paidAt.substring(0, 10)
+                    ) : (
+                      <i className="fas fa-times" style={{ color: 'red' }}></i>
+                    )}
+                  </td>
+                  <td>
+                    {order.isDelivered ? (
+                      order.deliveredAt && order.deliveredAt.substring(0, 10)
+                    ) : (
+                      <i className="fas fa-times" style={{ color: 'red' }}></i>
+                    )}
+                  </td>
+                  <td>
+                    <LinkContainer to={pfs(true, CONS.STR_ORDER, order._id)}>
+                      <Button className="btn-sm" variant="light">
+                        {trn.details}
+                      </Button>
+                    </LinkContainer>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </Col>
     </Row>
   );

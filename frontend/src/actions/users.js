@@ -39,6 +39,8 @@ export const login = (email, password) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   localStorage.removeItem('userInfo');
   dispatch({ type: TYPES.ULT });
+  dispatch({ type: TYPES.UDRS });
+  dispatch({ type: TYPES.OLMRS });
 };
 
 export const register =
@@ -104,9 +106,37 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 
     dispatch({
       type: TYPES.UDS,
-      payload: data,
+      payload: data.data,
     });
   } catch ({ response }) {
     return dispatchOnFail(dispatch, TYPES.UDF, response);
+  }
+};
+
+export const updateUserProfile = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: TYPES.UUPR,
+    });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(
+      pfs(true, CONS.STR_API, CONS.STR_AUTH, CONS.STR_UPDATEDETAILS),
+      user,
+      config
+    );
+
+    dispatch({
+      type: TYPES.UUPS,
+      payload: data,
+    });
+  } catch ({ response }) {
+    return dispatchOnFail(dispatch, TYPES.UUPF, response);
   }
 };

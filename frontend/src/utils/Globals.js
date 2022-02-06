@@ -21,8 +21,11 @@ export const validInput = (param) => {
 export const placeForwardslash = (hasForwardslash = true, ...endPoints) => {
   if (validInput(endPoints.length))
     throw new Error('Your input array should contain at least one element');
+  const hasFS = CONS.STR_FORWARDSLASH + endPoints.join(CONS.STR_FORWARDSLASH);
   return hasForwardslash
-    ? CONS.STR_FORWARDSLASH + endPoints.join(CONS.STR_FORWARDSLASH)
+    ? hasFS.startsWith('//')
+      ? hasFS.replace('//', '/')
+      : hasFS
     : endPoints.join(CONS.STR_FORWARDSLASH);
 };
 
@@ -34,7 +37,8 @@ export const dispatchOnFail = async (dispatch, type, error) => {
         ? error.response.data.message
         : typeof error.data === 'string'
         ? error.data
-        : (error.data.message && error.data.message) || error.message,
+        : (error.data.message ? error.data.message : error.data.errorMessage) ||
+          error.message,
   });
 };
 

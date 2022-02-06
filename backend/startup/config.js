@@ -14,6 +14,13 @@ export default function () {
       'FATAL ERROR: jwtPrivateKey, jwtExpiresIn and jwtCookieExpire must be  defined.'
     );
   }
+
+  //PAYPAY CREDENTIALS
+
+  if (!config.get('paypal_client_id')) {
+    throw new Error('FATAL ERROR: PayPal Client Id must be  defined.');
+  }
+
   // // mailtrap credentials must be defined
   // if (!config.get('smtp_host') || !config.get('smtp_port') || !config.get('smtp_email') || !config.get('smtp_password') || !config.get('from_email') || !config.get('from_name') || !config.get('to_email')) {
   //     throw new Error('FATAL ERROR ON MAILTRAP CREDENTIALS: smtp_host, smtp_port,  smtp_email, smtp_password,from_email and from_name must be  defined.');

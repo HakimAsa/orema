@@ -41,12 +41,7 @@ const CartPage = () => {
     dispatch(removeFromCart(id));
   };
   const checkoutHandler = () => {
-    navigate(
-      pfs(
-        true,
-        `${CONS.STR_LOGOUT}${CONS.STR_QM}${CONS.STR_REDIRECT}${CONS.STR_EQ}${CONS.STR_SHIPPING}`
-      )
-    );
+    navigate(pfs(true, CONS.STR_SHIPPING));
   };
   return (
     <Row>

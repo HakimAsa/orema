@@ -1,15 +1,7 @@
 import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Navbar,
-  Nav,
-  NavDropdown,
-  Container,
-  Image,
-  Col,
-} from 'react-bootstrap';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Navbar, Nav, NavDropdown, Container, Image } from 'react-bootstrap';
 
 import trn from '../en';
 import { placeForwardslash as pfs } from '../utils/Globals';

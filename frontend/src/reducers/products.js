@@ -5,7 +5,12 @@ export const productListReducer = (state = { products: [] }, action) => {
     case TYPES.PLR:
       return { loading: true, products: [] };
     case TYPES.PLS:
-      return { loading: false, products: action.payload };
+      return {
+        loading: false,
+        products: action.payload.data,
+        pages: action.payload.pages,
+        page: action.payload.page,
+      };
     case TYPES.PLF:
       return { loading: false, error: action.payload };
     default:
