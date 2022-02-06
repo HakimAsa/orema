@@ -3,7 +3,7 @@
 - show review and stars(✅)
 - user registration, profile, orders page (in progress...🔰)
 - admin status for products addition(❌)
-- fake paypal in order to buy products (❌)
-- pagination for products (❌)
+- fake paypal in order to buy products (✅
+- pagination for products (✅)
 - cart features using localStorage (✅)
 - Carousel of top products (❌)
