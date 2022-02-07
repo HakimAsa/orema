@@ -15,7 +15,7 @@
   "smtp_password": "or_smtp_password",
   "from_email": "or_from_email",
   "from_name": "or_from_name",
-  "paypal_client_id": "or_paypay_client_id",
+  "paypal_client_id": "or_paypal_client_id",
   "to_email": "or_to_email",
   "AWSAccessKeyId": "or_AWS_ACCESS_KEY_ID",
   "AWSSecretKey": "or_AWS_SECRET_ACCESS_KEY",

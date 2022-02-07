@@ -1,7 +1,7 @@
 import CONS from './Constants.js';
 
-export const changeCase = (str, isLower = false) => {
-  if (!str || typeof str !== 'string') throw new Error(CONS.INPUT_STRING);
+export const changeCase = (str, isLower = true) => {
+  if (!str || typeof str !== 'string') throw new Error(CONS.STR_INPUT_STRING);
   return isLower ? str.toLowerCase() : str.toUpperCase();
 };
 
@@ -42,6 +42,15 @@ export const dispatchOnFail = async (dispatch, type, error) => {
   });
 };
 
-export const capitalize = (str) =>
-  str && str.charAt(0).toUpperCase() + str.slice(1);
-export const log = process.env.NODE_ENV === 'development' && console.log;
+export const capitalize = (str) => {
+  if (!str || typeof str !== 'string') throw new Error(CONS.STR_INPUT_STRING);
+  return changeCase(str.trim().charAt(0), false) + str.trim().substring(1);
+};
+
+export const addSuffix = (str, suf = '') => {
+  if (!str || typeof str !== 'string') throw new Error(CONS.STR_INPUT_STRING);
+  return str + suf;
+};
+
+export const log = (...msg) =>
+  process.env.NODE_ENV === 'development' && console.log(msg);

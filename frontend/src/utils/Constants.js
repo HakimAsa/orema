@@ -7,6 +7,7 @@ const CONS = {
   STR_EQ: '=',
   STR_FORWARDSLASH: '/',
   STR_ID: 'id',
+  STR_INPUT_STRING: 'Your input should be a valid string',
   STR_LOGIN: 'login',
   STR_LOGOUT: 'logout',
   STR_ME: 'me',
