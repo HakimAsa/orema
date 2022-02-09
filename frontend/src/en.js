@@ -6,7 +6,7 @@ const translations = {
   button: 'button',
   cart: 'Cart',
   city: 'City',
-  confirmPassord: 'Confirm passwowd',
+  confirmPassword: 'Confirm password',
   continue: 'Continue',
   country: 'Country',
   description: 'Description',

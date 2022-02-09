@@ -21,6 +21,7 @@ const CONS = {
   STR_PAYMENTMETHOD: 'paymentMethod',
   STR_PAYMENTS: 'payments',
   STR_PLACEORDER: 'placeorder',
+  STR_PRODUCTLIST: 'productlist',
   STR_PRODUCT: 'product',
   STR_PRODUCTS: 'products',
   STR_PROFILE: 'profile',

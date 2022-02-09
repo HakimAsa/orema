@@ -13,9 +13,11 @@ const Paginate = ({ pages, page, keyword = '', isAdmin = false }) => {
           <LinkContainer
             key={x + 1}
             to={
-              keyword
-                ? pfs(true, CONS.STR_SEARCH, keyword, CONS.STR_PAGE, x + 1)
-                : pfs(true, CONS.STR_PAGE, x + 1)
+              !isAdmin
+                ? keyword
+                  ? pfs(true, CONS.STR_SEARCH, keyword, CONS.STR_PAGE, x + 1)
+                  : pfs(true, CONS.STR_PAGE, x + 1)
+                : pfs(true, CONS.STR_PRODUCTLIST, x + 1)
             }
           >
             <Pagination.Item active={x + 1 === page}>{x + 1}</Pagination.Item>

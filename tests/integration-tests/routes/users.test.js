@@ -14,7 +14,7 @@ describe(`endpoint  ${path}`, () => {
     await User.deleteOne({ firstName: 'aasaasasa' });
   });
 
-  it('mock tess', () => {
+  it('mock tests', () => {
     expect(path).toBe('/api/users');
   });
 

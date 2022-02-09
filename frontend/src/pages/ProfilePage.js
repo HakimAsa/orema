@@ -66,11 +66,11 @@ const ProfilePage = () => {
     } else {
       const fieldsToUpdate = {
         id: user._id,
-        name: name,
-        email: email,
-        phoneNumber: phoneNumber,
-        userImage: userImage,
-        address: address,
+        name,
+        email,
+        phoneNumber,
+        userImage,
+        address,
         password,
       };
 

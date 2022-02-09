@@ -63,7 +63,7 @@ const Header = () => {
                   />
                 </>
               ) : (
-                <LinkContainer to="/login">
+                <LinkContainer to={pfs(true, CONS.STR_LOGIN)}>
                   <Nav.Link>
                     <i className="fas fa-user"></i>
                     {trn.signIn}
