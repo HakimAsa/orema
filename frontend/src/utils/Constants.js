@@ -1,9 +1,11 @@
 const CONS = {
   STR_ADMIN: 'admin',
+  STR_ADMINMENU: 'adminmenu',
   STR_API: 'api',
   STR_AUTH: 'auth',
   STR_CART: 'cart',
   STR_CONS: ':',
+  STR_EDIT: 'edit',
   STR_EQ: '=',
   STR_FORWARDSLASH: '/',
   STR_ID: 'id',
@@ -14,6 +16,7 @@ const CONS = {
   STR_MYORDER: 'myorder',
   STR_MYORDERS: 'myorders',
   STR_ORDER: 'order',
+  STR_ORDERLIST: 'orderlist',
   STR_ORDERS: 'orders',
   STR_PAGE: 'page',
   STR_PAY: 'pay',
@@ -37,6 +40,7 @@ const CONS = {
   STR_TOP: 'top',
   STR_UPDATEDETAILS: 'updatedetails',
   STR_USER: 'user',
+  STR_USERLIST: 'userlist',
   STR_USERS: 'users',
 };
 

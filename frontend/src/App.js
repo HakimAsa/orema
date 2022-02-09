@@ -17,6 +17,7 @@ import ShippingPage from './pages/ShippingPage';
 import PaymentPage from './pages/PaymentPage';
 import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderPage from './pages/OrderPage';
+import UserListPage from './pages/UserListPage';
 
 const App = () => {
   return (
@@ -71,6 +72,10 @@ const App = () => {
             <Route
               path={pfs(true, CONS.STR_ORDER, ':id')}
               element={<OrderPage />}
+            />
+            <Route
+              path={pfs(true, CONS.STR_ADMIN, CONS.STR_USERLIST)}
+              element={<UserListPage />}
             />
           </Routes>
         </Container>

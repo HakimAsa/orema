@@ -55,3 +55,18 @@ export const userUpdateProfileReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const userListReducer = (state = { users: [] }, action) => {
+  switch (action.type) {
+    case TYPES.ULIR:
+      return { loading: true };
+    case TYPES.ULIS:
+      return { loading: false, users: action.payload.data };
+    case TYPES.ULIF:
+      return { loading: false, error: action.payload };
+    case TYPES.ULIRS:
+      return { users: [] };
+    default:
+      return state;
+  }
+};

@@ -41,6 +41,7 @@ export const logout = () => (dispatch) => {
   dispatch({ type: TYPES.ULT });
   dispatch({ type: TYPES.UDRS });
   dispatch({ type: TYPES.OLMRS });
+  dispatch({ type: TYPES.ULIRS });
 };
 
 export const register =
@@ -138,5 +139,31 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     });
   } catch ({ response }) {
     return dispatchOnFail(dispatch, TYPES.UUPF, response);
+  }
+};
+
+export const listUsers = () => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: TYPES.ULIR,
+    });
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(
+      pfs(true, CONS.STR_API, CONS.STR_USERS),
+      config
+    );
+
+    dispatch({
+      type: TYPES.ULIS,
+      payload: data,
+    });
+  } catch ({ response }) {
+    return dispatchOnFail(dispatch, TYPES.ULIF, response);
   }
 };

@@ -70,6 +70,26 @@ const Header = () => {
                   </Nav.Link>
                 </LinkContainer>
               )}
+
+              {userInfo && userInfo.isAdmin && (
+                <NavDropdown title={trn.admin} id={CONS.STR_ADMINMENU}>
+                  <LinkContainer
+                    to={pfs(true, CONS.STR_ADMIN, CONS.STR_USERLIST)}
+                  >
+                    <NavDropdown.Item>{trn.users}</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer
+                    to={pfs(true, CONS.STR_ADMIN, CONS.STR_PRODUCTLIST)}
+                  >
+                    <NavDropdown.Item>{trn.products}</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer
+                    to={pfs(true, CONS.STR_ADMIN, CONS.STR_ORDERLIST)}
+                  >
+                    <NavDropdown.Item>{trn.orders}</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
