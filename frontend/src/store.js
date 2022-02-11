@@ -19,6 +19,7 @@ import {
   userDetailsReducer as udr,
   userUpdateProfileReducer as uupr,
   userListReducer as ulir,
+  userDeleteReducer as udlr,
 } from './reducers/users';
 import CONS from './utils/Constants';
 
@@ -26,6 +27,7 @@ const reducer = combineReducers({
   productList: plr,
   productDetails: pdr,
   cart: cr,
+  userDelete: udlr,
   userList: ulir,
   userLogin: ulr,
   userRegister: urr,

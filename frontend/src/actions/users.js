@@ -1,9 +1,15 @@
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 import CONS from '../utils/Constants';
-import { dispatchOnFail, placeForwardslash as pfs } from '../utils/Globals';
+import {
+  capitalize,
+  dispatchOnFail,
+  placeForwardslash as pfs,
+} from '../utils/Globals';
 import TYPES from '../utils/Types';
 import fld from '../utils/FieldNames';
+
 export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({
@@ -165,5 +171,78 @@ export const listUsers = () => async (dispatch, getState) => {
     });
   } catch ({ response }) {
     return dispatchOnFail(dispatch, TYPES.ULIF, response);
+  }
+};
+
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: TYPES.UDLR,
+    });
+
+    const isAdmin = getState().userLogin.userInfo.isAdmin;
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${getState().userLogin.userInfo.token}`,
+      },
+    };
+
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger',
+      },
+      buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true,
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(
+              isAdmin
+                ? pfs(true, CONS.STR_API, CONS.STR_USERS, id)
+                : pfs(true, CONS.STR_API, CONS.STR_AUTH, id),
+              config
+            )
+            .then((res) => {
+              if (res && res.data.success) {
+                swalWithBootstrapButtons.fire(
+                  'Deleted!',
+                  `the user with name:${capitalize(
+                    res.data.data.name
+                  )} has been deleted!🙂`,
+                  'success'
+                );
+              }
+            })
+            .then((a) => {
+              window.location.reload(); //todo
+            })
+            .catch(({ response }) => {
+              return dispatchOnFail(dispatch, TYPES.UDLF, response);
+            });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          swalWithBootstrapButtons.fire(
+            'Cancelled',
+            `${id} is safe 😄`,
+            'error'
+          );
+        }
+      });
+
+    dispatch({ type: TYPES.UDLS });
+  } catch ({ response }) {
+    return dispatchOnFail(dispatch, TYPES.UDLF, response);
   }
 };

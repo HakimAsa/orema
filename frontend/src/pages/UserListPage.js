@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { listUsers } from '../actions/users';
+import { listUsers, deleteUser } from '../actions/users';
 import trn from '../en';
 import CONS from '../utils/Constants';
 import {
@@ -24,6 +24,9 @@ const UserListPage = () => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const userDelete = useSelector((state) => state.userDelete);
+  const { success: successDelete, error: errorDelete } = userDelete;
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,13 +35,14 @@ const UserListPage = () => {
     } else {
       navigate(pfs(true, CONS.STR_LOGIN));
     }
-  }, [dispatch, navigate]);
+  }, [dispatch, navigate, userInfo, successDelete, errorDelete]);
 
   const deletehandler = (id) => {
-    console.log('delete');
+    dispatch(deleteUser(id));
   };
   return (
     <>
+      {errorDelete && <Message variant="danger">{errorDelete}</Message>}
       <h1>{trn.users}</h1>
       {loading ? (
         <Loader />
@@ -82,7 +86,7 @@ const UserListPage = () => {
                   <Button
                     variant="danger"
                     className="btn-sm"
-                    onClick={(e) => deletehandler(user._id)}
+                    onClick={(e) => deletehandler(user._id, user.name)}
                   >
                     <i className="fas fa-trash"></i>
                   </Button>

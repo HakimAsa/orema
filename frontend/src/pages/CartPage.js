@@ -12,7 +12,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import Message from '../components/Message';
-import Loader from '../components/Loader';
 import { addToCart, removeFromCart } from '../actions/carts';
 import translations from '../en';
 import CONS from '../utils/Constants';
@@ -29,8 +28,10 @@ const CartPage = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
+
   useEffect(() => {
     if (productId && Object.keys(productId).length) {
       dispatch(addToCart(productId.id, qty));
@@ -56,7 +57,6 @@ const CartPage = () => {
           <ListGroup variant="flush">
             {cartItems.map(
               (item) =>
-                //todo why item has {qty: 1} by default: reducers to be checked
                 item &&
                 item.product && (
                   <ListGroup.Item key={item.product}>

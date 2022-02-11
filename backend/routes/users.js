@@ -101,4 +101,29 @@ router.put(setID, [validateObjectId, auth, admin], async (req, res) => {
   res.send(user);
 });
 
+// @desc delete user from db by admin only
+// @route DELETE /api/users/:id
+// @access Private
+router.delete(setID, [validateObjectId, auth, admin], async (req, res) => {
+  const id = req.params.id;
+  const user = await User.findById(id);
+  if (!user) return res.status(404).send(fourOfour(CONS.STR_USER, id));
+
+  if (
+    req.user._id.toString() !== id.toString() &&
+    req.user.isAdmin &&
+    user.isAdmin
+  )
+    return res
+      .status(401)
+      .send('You can only delete your own account or non admin users☹️');
+
+  user.remove();
+  res.send({
+    success: true,
+    successMessage: `User ${user.name} has been deleted successfully`,
+    data: user,
+  });
+});
+
 export default router;

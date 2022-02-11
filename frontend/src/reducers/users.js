@@ -70,3 +70,16 @@ export const userListReducer = (state = { users: [] }, action) => {
       return state;
   }
 };
+
+export const userDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case TYPES.UDLR:
+      return { loading: true };
+    case TYPES.UDLS:
+      return { loading: false, success: true };
+    case TYPES.UDLF:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
