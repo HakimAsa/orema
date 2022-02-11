@@ -206,7 +206,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
         cancelButtonText: 'No, cancel!',
         reverseButtons: true,
       })
-      .then(async (result) => {
+      .then((result) => {
         if (result.isConfirmed) {
           axios
             .delete(
