@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
-import Joi from 'joi';
-import passwordComplexity from 'joi-password-complexity';
-import crypto from 'crypto';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import config from 'config';
+import mongoose from "mongoose";
+import Joi from "joi";
+import passwordComplexity from "joi-password-complexity";
+import crypto from "crypto";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import config from "config";
 
-import CONS from '../../../frontend/src/utils/Constants.js';
-import { capitalize } from '../../../frontend/src/utils/Globals.js';
+import CONS from "../../../frontend/src/utils/Constants.js";
+import { capitalize } from "../../../frontend/src/utils/Globals.js";
 const Schema = mongoose.Schema;
 
 const complexityOptions = {
@@ -64,7 +64,7 @@ const userSchema = new Schema(
     resetPasswordExpire: Date,
   },
   {
-    timestapms: true,
+    timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
@@ -73,9 +73,9 @@ const userSchema = new Schema(
 userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
     { _id: this._id, isAdmin: this.isAdmin, name: this.name },
-    config.get('jwtPrivateKey'),
+    config.get("jwtPrivateKey"),
     {
-      expiresIn: config.get('jwtExpiresIn'),
+      expiresIn: config.get("jwtExpiresIn"),
     }
   );
   return token;
@@ -87,7 +87,7 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 };
 
 // Cascade Delete orders when a user is deleted
-userSchema.pre('remove', async function (next) {
+userSchema.pre("remove", async function (next) {
   await this.model(capitalize(CONS.STR_ORDER)).deleteMany({ user: this._id });
   next();
 });
@@ -95,12 +95,12 @@ userSchema.pre('remove', async function (next) {
 // Reverse Poplulate orders associated with users with virtuals
 userSchema.virtual(CONS.STR_ORDERS, {
   ref: capitalize(CONS.STR_ORDER),
-  localField: '_id',
-  foreignField: 'user',
+  localField: "_id",
+  foreignField: "user",
   justOne: false,
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 function validateUser(user, isRequired = true) {
   const schema = Joi.object({
@@ -119,7 +119,7 @@ function validateUser(user, isRequired = true) {
       .pattern(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im),
     password: isRequired
       ? passwordComplexity(complexityOptions).required()
-      : passwordComplexity(complexityOptions).allow(''),
+      : passwordComplexity(complexityOptions).allow(""),
     resetPasswordToken: Joi.string(),
     resetPasswordExpire: Joi.date(),
   });
